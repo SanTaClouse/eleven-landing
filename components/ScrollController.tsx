@@ -68,8 +68,13 @@ export function ScrollController({
   useEffect(() => {
     // Scroll bloqueado hasta estar arriba del ascensor
     document.body.style.overflow = phase === "ride" ? "" : "hidden";
-    if (phase === "ride") lenisRef.current?.start();
-    else lenisRef.current?.stop();
+    if (phase === "ride") {
+      lenisRef.current?.start();
+      // Re-medir DESPUÉS de desbloquear el scroll (con el layout final)
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    } else {
+      lenisRef.current?.stop();
+    }
 
     if (phase === "arriving") {
       window.scrollTo(0, 0);
@@ -81,10 +86,7 @@ export function ScrollController({
         duration: 2.6,
         ease: "power2.inOut",
         onUpdate: () => setState({ introT: obj.t }),
-        onComplete: () => {
-          setState({ phase: "ride" });
-          ScrollTrigger.refresh();
-        },
+        onComplete: () => setState({ phase: "ride" }),
       });
       return () => {
         tween.kill();

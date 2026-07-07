@@ -19,6 +19,13 @@ body {
   min-height: 100%;
 }
 
+/* Reserva el ancho de la scrollbar desde el inicio: al desbloquear el
+   scroll (fin de la intro) la barra aparece y, sin esto, en Windows el
+   viewport se angosta ~15px y toda la escena pega un salto lateral. */
+html {
+  scrollbar-gutter: stable;
+}
+
 /* Scrollbar discreta acorde a la estética acero */
 ::-webkit-scrollbar {
   width: 10px;
