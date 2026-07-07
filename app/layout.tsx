@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: "ELEVEN Ascensores — Mantenimiento, instalación y urgencias 24hs en Santa Fe",
   description:
     "Empresa de Santa Fe dedicada al mantenimiento, instalación y modernización de ascensores para consorcios y administradoras de edificios. Atención inmediata las 24 horas.",
-  icons: { icon: "/brand/eleven-logo.png" },
+  // favicon: app/favicon.ico (heredado de la web anterior, auto-detectado)
 };
 
 export const viewport: Viewport = {

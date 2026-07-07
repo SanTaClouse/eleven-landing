@@ -36,7 +36,10 @@ export function Experience({
 
   return (
     <>
-      <div className="fixed inset-0 z-0">
+      {/* Alto en lvh (viewport grande): en iOS NO cambia cuando la barra de
+          dirección colapsa → el canvas WebGL nunca se redimensiona a mitad
+          del scroll (realocar el framebuffer ahí produce un tirón). */}
+      <div className="fixed inset-x-0 top-0 z-0 h-screen supports-[height:1lvh]:h-[100lvh]">
         <Scene tier={tier} />
       </div>
 

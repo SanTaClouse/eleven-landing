@@ -2,7 +2,7 @@
 
 import { Suspense, useMemo } from "react";
 import { Canvas } from "@react-three/fiber";
-import { Environment, Lightformer, Sparkles } from "@react-three/drei";
+import { Environment, Lightformer, Preload, Sparkles } from "@react-three/drei";
 import { INTRO_POS } from "@/lib/ridePath";
 import type { QualityTier } from "@/lib/quality";
 import { setState } from "@/lib/store";
@@ -103,6 +103,12 @@ export function Scene({ tier }: { tier: QualityTier }) {
             color="#73B3F7"
           />
         )}
+
+        {/* CLAVE PARA MOBILE: compila TODOS los shaders y sube todas las
+            texturas al montar. Sin esto, iOS compila el material de cada
+            objeto la primera vez que entra en cámara → tirones al empezar
+            a scrollear (interior de cabina, torres de contexto, etc.). */}
+        <Preload all />
       </Suspense>
 
       <RigController handles={handles} />
