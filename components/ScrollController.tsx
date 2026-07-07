@@ -8,6 +8,10 @@ import { setState, useExperience } from "@/lib/store";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
+  // iOS Safari: al primer scroll colapsa la barra de dirección y cambia el
+  // alto del viewport; sin esto ScrollTrigger se re-mide en ese momento y
+  // produce un tirón. Ignoramos ese resize (solo re-medimos en rotación).
+  ScrollTrigger.config({ ignoreMobileResize: true });
 }
 
 /**

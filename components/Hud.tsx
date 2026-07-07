@@ -35,7 +35,7 @@ export function Hud() {
   return (
     <div
       ref={rootRef}
-      className="scroll-synced pointer-events-none fixed left-1/2 top-5 z-20 -translate-x-1/2 opacity-0"
+      className="scroll-synced pointer-events-none fixed left-1/2 top-[4.5rem] z-20 -translate-x-1/2 opacity-0 md:top-5"
     >
       <div
         className="flex items-center gap-4 rounded-2xl border border-brand/25 px-6 py-2.5 backdrop-blur-md"

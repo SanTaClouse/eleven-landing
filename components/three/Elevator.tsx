@@ -169,9 +169,10 @@ export function Elevator({ handles }: { handles: SceneHandles }) {
         <meshStandardMaterial {...DARK_STEEL} />
       </mesh>
       {/* Logo en la pared trasera: la marca recibe al pasajero cuando las
-          puertas se abren en PB, y acompaña el giro al entrar */}
+          puertas se abren en PB, y acompaña el giro al entrar. Con aire a
+          los costados: las tiras LED están en x=±0.85. */}
       <mesh position={[0, 1.8, 2.21]}>
-        <planeGeometry args={[1.7, 1.7 / LOGO_ASPECT]} />
+        <planeGeometry args={[1.25, 1.25 / LOGO_ASPECT]} />
         <meshBasicMaterial map={logoTex} transparent toneMapped={false} depthWrite={false} />
       </mesh>
       {[-0.85, 0.85].map((x) => (

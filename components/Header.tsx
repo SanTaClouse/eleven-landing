@@ -57,9 +57,27 @@ export function Header({ onAccessible }: { onAccessible: () => void }) {
         <button
           type="button"
           onClick={onAccessible}
-          className="pointer-events-auto rounded-full border border-white/10 bg-ink/60 px-4 py-2 text-xs tracking-wide text-steel backdrop-blur transition-colors hover:border-brand/50 hover:text-brand-light"
+          aria-label="Ver versión accesible"
+          className="pointer-events-auto flex h-9 items-center justify-center rounded-full border border-white/10 bg-ink/60 text-steel backdrop-blur transition-colors hover:border-brand/50 hover:text-brand-light max-sm:w-9 sm:px-4"
         >
-          Versión accesible
+          <span className="hidden text-xs tracking-wide sm:inline">
+            Versión accesible
+          </span>
+          {/* ícono de accesibilidad universal (solo mobile) */}
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            className="sm:hidden"
+            aria-hidden
+          >
+            <circle cx="12" cy="5" r="2" />
+            <path d="M4 9h16M12 9v6m0 0-3.5 5M12 15l3.5 5" />
+          </svg>
         </button>
       </div>
     </header>

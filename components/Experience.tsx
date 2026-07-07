@@ -47,8 +47,14 @@ export function Experience({
       <Preloader />
       <ScrollController spacerRef={spacerRef} />
 
-      {/* Spacer de scroll: 100vh por "tramo" del recorrido aprox. */}
-      <div ref={spacerRef} style={{ height: "700vh" }} aria-hidden />
+      {/* Spacer de scroll: 100vh por "tramo" del recorrido aprox.
+          svh (viewport chico) donde exista: en iOS no cambia cuando la barra
+          de dirección colapsa, así el mapeo scroll→progreso queda estable. */}
+      <div
+        ref={spacerRef}
+        className="h-[700vh] supports-[height:1svh]:h-[700svh]"
+        aria-hidden
+      />
 
       <ContactSection />
     </>
