@@ -100,6 +100,17 @@ export function panelWindow(i: number): [number, number, number, number] {
   return [s + 0.28 * SEG, s + 0.4 * SEG, s + 0.8 * SEG, s + 0.92 * SEG];
 }
 
+/**
+ * Progreso de REPOSO de cada piso de servicios (1..4) para el scroll por
+ * pasos: t=0.6 del segmento es el centro de la meseta "puertas abiertas +
+ * panel 100% visible" (abren hasta t=0.36, cierran desde t=0.86). El
+ * ScrollController detiene el ascensor exactamente acá entre gesto y gesto.
+ */
+export const FLOOR_STOPS = Array.from(
+  { length: FLOORS },
+  (_, i) => ASCENT_START + (i + 0.6) * SEG,
+);
+
 /** Estado completo del recorrido para un progreso p ∈ [0,1] */
 export function rideStateAt(p: number): RideState {
   p = clamp01(p);

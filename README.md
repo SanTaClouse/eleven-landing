@@ -6,8 +6,7 @@ scroll: el usuario **llama el ascensor**, entra a la cabina y cada piso que
 sube revela un servicio de la empresa. Sin video pregrabado.
 
 **Stack:** Next.js 14 (App Router) · TypeScript · React Three Fiber · drei ·
-GSAP + ScrollTrigger · Lenis (smooth scroll) · Tailwind CSS · lottie-react
-(opcional para el display).
+GSAP + ScrollTrigger · Tailwind CSS · lottie-react (opcional para el display).
 
 ---
 
@@ -28,9 +27,11 @@ npm start        # servir el build
    llegar (WebAudio sintetizado, muteable desde el header).
 3. **Barrido de intro** — la cámara vuela desde la vista aérea del edificio
    hasta la puerta del ascensor. Se desbloquea el scroll.
-4. **Ride** — el scroll controla todo: dolly-in, apertura de puertas, entrada
-   a la cabina, subida piso a piso (PB → 1 → 2 → 3 → 4). En cada piso las
-   puertas 3D se abren y aparece el panel del servicio, en sincronía exacta.
+4. **Ride** — scroll por pasos tipo reels: cada gesto (rueda, swipe o
+   teclado), sin importar su fuerza, avanza UNA parada — cierra puertas,
+   sube y abre puertas del piso siguiente (PB → 1 → 2 → 3 → 4). En cada piso
+   las puertas 3D se abren y aparece el panel del servicio, en sincronía
+   exacta. El timeline lateral marca el recorrido y permite saltar de piso.
 5. **Piso 5 / Recepción** — sección de contacto con CTA "Solicitar
    presupuesto" estilo botonera.
 
@@ -70,14 +71,12 @@ perfecta desde el día uno.
 ## Arquitectura de la sincronización (los puntos delicados)
 
 ```
-rueda / touch
+rueda / touch / teclado (un gesto = una parada, la fuerza no importa)
    │
    ▼
-Lenis (smooth scroll inercial: la rueda no avanza "a saltos")
-   │
-   ▼
-ScrollController ── ScrollTrigger mapea el spacer (700vh) → targetProgress
-   │
+ScrollController ── stepper: tween de scroll hasta la parada siguiente
+   │                (paradas = FLOOR_STOPS de lib/ridePath.ts + contacto)
+   ├── ScrollTrigger mapea el spacer (700vh) → targetProgress
    ▼  (store pub/sub, sin re-renders)
 RigController (useFrame, 60fps)
    ├─ suaviza targetProgress → progress (damping exponencial)

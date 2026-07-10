@@ -34,6 +34,12 @@ export interface ExperienceState {
   floor: number;
   /** true mientras la cabina está en movimiento vertical */
   moving: boolean;
+  /** Parada actual del stepper: 0 = vista edificio, 1..4 pisos, 5 = contacto */
+  stopIndex: number;
+  /** true mientras el stepper anima el viaje a una parada */
+  stepping: boolean;
+  /** Parada pedida desde la UI (timeline); -1 = ninguna. La consume el ScrollController */
+  requestedStop: number;
   muted: boolean;
   /** el Canvas WebGL ya montó y renderizó su primer frame */
   sceneReady: boolean;
@@ -46,6 +52,9 @@ const state: ExperienceState = {
   introT: 0,
   floor: 0,
   moving: false,
+  stopIndex: 0,
+  stepping: false,
+  requestedStop: -1,
   muted: false,
   sceneReady: false,
 };

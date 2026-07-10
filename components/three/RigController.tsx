@@ -41,8 +41,8 @@ export function RigController({ handles }: { handles: SceneHandles }) {
     const dt = Math.min(rawDt, 0.05); // clamp: evita saltos al recuperar foco
 
     // 1) Suavizado del progreso de scroll
-    // Lenis ya suaviza el scroll; el damping acá queda más "atado" para no
-    // duplicar inercia (doble suavizado = sensación de lag).
+    // El viaje entre paradas ya es un tween con easing; el damping acá queda
+    // "atado" solo para redondear la llegada sin sensación de lag.
     const p = damp(s.progress, s.targetProgress, 7, dt);
 
     // 2) Estado del recorrido

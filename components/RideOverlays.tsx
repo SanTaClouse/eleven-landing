@@ -18,9 +18,10 @@ export function RideOverlays() {
   useEffect(
     () =>
       subscribe(() => {
-        const { progress, phase, introT } = getState();
+        const { progress, phase, introT, stepping, stopIndex } = getState();
         const ready = phase === "ride";
-        // Aparece al final de la intro, se va apenas arranca el scroll
+
+        // Header: aparece al final de la intro, se desvanece al empezar scroll
         const oIn = ready ? 1 : smoothstep(0.75, 1, introT);
         const oOut = 1 - smoothstep(0.015, 0.09, progress);
         const o = Math.min(oIn, oOut);
@@ -32,10 +33,15 @@ export function RideOverlays() {
           scrimRef.current.style.opacity = o.toFixed(3);
           scrimRef.current.style.visibility = o <= 0.01 ? "hidden" : "visible";
         }
+
+        // Hint "DESLIZÁ": visible detenido en una parada (no mientras el
+        // stepper anima el viaje, no en la salida final). Aparece con un
+        // retardo para no parpadear entre piso y piso; se apaga al instante
+        // al arrancar el paso — feedback de que el gesto fue tomado.
         if (hintRef.current) {
-          const oh = ready ? 1 - smoothstep(0.006, 0.045, progress) : 0;
-          hintRef.current.style.opacity = oh.toFixed(3);
-          hintRef.current.style.visibility = oh <= 0.01 ? "hidden" : "visible";
+          const show = ready && !stepping && stopIndex < 5;
+          hintRef.current.style.opacity = show ? "1" : "0";
+          hintRef.current.style.transitionDelay = show ? "900ms" : "0ms";
         }
       }),
     [],
@@ -84,17 +90,25 @@ export function RideOverlays() {
 
       <div
         ref={hintRef}
-        className="scroll-synced pointer-events-none fixed inset-x-0 bottom-8 z-10 flex flex-col items-center gap-2 opacity-0"
+        className="scroll-synced pointer-events-none fixed inset-x-0 z-10 flex flex-col items-center gap-2 opacity-0 transition-opacity duration-500"
+        style={{ bottom: "max(1.75rem, env(safe-area-inset-bottom))" }}
       >
-        <span
-          className="text-[11px] tracking-[0.35em] text-snow/80"
-          style={{ textShadow: "0 1px 8px rgba(3,6,14,0.9)" }}
-        >
-          SCROLLEÁ PARA CONOCERNOS
-        </span>
-        <svg width="18" height="18" viewBox="0 0 24 24" className="animate-bounce text-brand-light" aria-hidden>
-          <path d="M12 20 4 9h16L12 20Z" fill="currentColor" />
-        </svg>
+        <div className="flex flex-col items-center gap-1">
+          <div className="flex flex-col gap-1">
+            <svg width="16" height="16" viewBox="0 0 24 24" className="animate-bounce text-brand-light mx-auto" aria-hidden>
+              <path d="M12 20 4 9h16L12 20Z" fill="currentColor" />
+            </svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" className="animate-bounce text-brand-light mx-auto" style={{ animationDelay: "0.15s" }} aria-hidden>
+              <path d="M12 20 4 9h16L12 20Z" fill="currentColor" />
+            </svg>
+          </div>
+          <span
+            className="text-[10px] font-semibold tracking-[0.3em] text-snow/80 md:text-xs"
+            style={{ textShadow: "0 1px 6px rgba(3,6,14,0.9)" }}
+          >
+            DESLIZÁ
+          </span>
+        </div>
       </div>
     </>
   );

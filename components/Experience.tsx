@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import type { QualityTier } from "@/lib/quality";
 import { ContactSection } from "./ContactSection";
+import { FloorTimeline } from "./FloorTimeline";
 import { Header } from "./Header";
 import { Hud } from "./Hud";
 import { Preloader } from "./Preloader";
@@ -48,6 +49,7 @@ export function Experience({
       <Hud />
       <Header onAccessible={onAccessible} />
       <Preloader />
+      <FloorTimeline />
       <ScrollController spacerRef={spacerRef} />
 
       {/* Spacer de scroll: 100vh por "tramo" del recorrido aprox.

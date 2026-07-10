@@ -59,6 +59,9 @@ export function Landing() {
         introT: 0,
         floor: 0,
         moving: false,
+        stopIndex: 0,
+        stepping: false,
+        requestedStop: -1,
       });
     } else {
       document.body.style.overflow = "";
