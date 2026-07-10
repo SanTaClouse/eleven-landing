@@ -90,10 +90,10 @@ export function FloorTimeline() {
     <nav
       ref={rootRef}
       aria-label="Recorrido por pisos"
-      className="pointer-events-none fixed right-2 top-1/2 z-20 -translate-y-1/2 opacity-0 transition-opacity duration-500 md:right-5"
+      className="pointer-events-none fixed right-1.5 top-1/2 z-20 -translate-y-1/2 opacity-0 transition-opacity duration-500 md:right-8"
     >
       <div
-        className="relative flex flex-col items-center gap-3 rounded-full border border-white/10 px-1.5 py-3 backdrop-blur-md md:gap-3.5"
+        className="relative flex flex-col items-center gap-2 rounded-full border border-white/10 px-1 py-2 backdrop-blur-md md:gap-3.5 md:px-1.5 md:py-3"
         style={{
           background:
             "linear-gradient(180deg, rgba(12,20,36,0.55) 0%, rgba(6,10,20,0.55) 100%)",
@@ -101,18 +101,17 @@ export function FloorTimeline() {
         }}
       >
         {/* Riel base: del centro del primer punto al centro del último.
-            (h-7 = 28px de botón + py-3 = 12px → los centros quedan a 26px) */}
+            mobile: botón 24px + py 8px → centros a 20px (top-5)
+            md:     botón 28px + py 12px → centros a 26px */}
         <div
-          className="absolute left-1/2 w-px -translate-x-1/2 bg-white/10"
-          style={{ top: 26, bottom: 26 }}
+          className="absolute left-1/2 top-5 bottom-5 w-px -translate-x-1/2 bg-white/10 md:top-[26px] md:bottom-[26px]"
           aria-hidden
         />
         {/* Riel de progreso (altura en px seteada por la suscripción) */}
         <div
           ref={fillRef}
-          className="absolute left-1/2 w-[2px] -translate-x-1/2 rounded-full transition-[height] duration-[2600ms] ease-in-out"
+          className="absolute left-1/2 top-5 w-[2px] -translate-x-1/2 rounded-full transition-[height] duration-[2600ms] ease-in-out md:top-[26px]"
           style={{
-            top: 26,
             height: 0,
             background:
               "linear-gradient(180deg, rgba(115,179,247,0.9), rgba(64,128,224,0.9))",
@@ -130,13 +129,13 @@ export function FloorTimeline() {
             type="button"
             onClick={() => setState({ requestedStop: i })}
             aria-label={`Ir a ${stop.name}`}
-            className="group pointer-events-auto relative flex h-7 w-7 items-center justify-center"
+            className="group pointer-events-auto relative flex h-6 w-6 items-center justify-center md:h-7 md:w-7"
           >
             <span
               ref={(el) => {
                 dotRefs.current[i] = el;
               }}
-              className="flex h-[22px] w-[22px] items-center justify-center rounded-full border text-[9px] font-semibold tabular-nums transition-all duration-500"
+              className="flex h-4 w-4 items-center justify-center rounded-full border text-[7px] font-semibold tabular-nums transition-all duration-500 md:h-[22px] md:w-[22px] md:text-[9px]"
               style={{
                 background: "rgba(12,20,36,0.85)",
                 borderColor: "rgba(242,245,250,0.18)",

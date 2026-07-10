@@ -111,6 +111,85 @@ export const FLOOR_STOPS = Array.from(
   (_, i) => ASCENT_START + (i + 0.6) * SEG,
 );
 
+export interface StepWaypoint {
+  /** progreso destino del beat */
+  p: number;
+  /** duración del beat en segundos */
+  dur: number;
+  /** easing GSAP del beat */
+  ease: string;
+}
+
+/** Espeja un easing para recorrer un beat en reversa (in ↔ out) */
+function mirrorEase(e: string): string {
+  if (e.endsWith(".in")) return e.replace(/\.in$/, ".out");
+  if (e.endsWith(".out")) return e.replace(/\.out$/, ".in");
+  return e;
+}
+
+/**
+ * Guion del viaje entre paradas ADYACENTES del stepper (0 = vista del
+ * edificio, 1..4 = pisos, 5 = llegada final en p=1). Un tween único con
+ * easing global comprime toda la narrativa en el tramo veloz del easing y
+ * arrastra lentísimo la "zona muerta" del reposo (parece que no pasa nada);
+ * acá cada beat (salir del reposo, puertas, subida, apertura, reposo) tiene
+ * SU duración y easing: la respuesta al gesto es casi inmediata y cada
+ * momento se aprecia. Devuelve null si las paradas no son adyacentes (los
+ * saltos expresos usan un tween único en el controller).
+ */
+export function stepWaypoints(
+  from: number,
+  to: number,
+): StepWaypoint[] | null {
+  if (Math.abs(to - from) !== 1) return null;
+  const lo = Math.min(from, to);
+  const fw: StepWaypoint[] = [];
+  let pStart: number;
+
+  if (lo === 0) {
+    // Entrada: aproximación al edificio → puertas PB + entrar + girar +
+    // cerrar → subida al piso 1 → apertura → reposo
+    pStart = 0;
+    fw.push({ p: APPROACH_END, dur: 1.6, ease: "sine.inOut" });
+    fw.push({ p: DOORS_CLOSE_PB[1], dur: 2.8, ease: "sine.inOut" });
+    fw.push({ p: ASCENT_START + T_RISE_END * SEG, dur: 1.2, ease: "sine.inOut" });
+    fw.push({ p: ASCENT_START + T_OPEN[1] * SEG, dur: 0.9, ease: "none" });
+    fw.push({ p: FLOOR_STOPS[0], dur: 0.5, ease: "power1.out" });
+  } else if (lo < FLOORS) {
+    // Piso lo → piso lo+1: cruzar la zona muerta rápido (el gesto responde
+    // ya), puertas cierran, subida, puertas abren, reposo
+    const s = ASCENT_START + (lo - 1) * SEG;
+    pStart = FLOOR_STOPS[lo - 1];
+    fw.push({ p: s + T_CLOSE[0] * SEG, dur: 0.35, ease: "power1.in" });
+    fw.push({ p: s + SEG, dur: 0.9, ease: "none" });
+    fw.push({ p: s + SEG + T_RISE_END * SEG, dur: 1.3, ease: "sine.inOut" });
+    fw.push({ p: s + SEG + T_OPEN[1] * SEG, dur: 0.9, ease: "none" });
+    fw.push({ p: FLOOR_STOPS[lo], dur: 0.5, ease: "power1.out" });
+  } else {
+    // Piso 4 → llegada: cierre, subida final, apertura y paso afuera
+    const s = ASCENT_START + (FLOORS - 1) * SEG;
+    pStart = FLOOR_STOPS[FLOORS - 1];
+    fw.push({ p: s + T_CLOSE[0] * SEG, dur: 0.35, ease: "power1.in" });
+    fw.push({ p: ASCENT_END, dur: 0.9, ease: "none" });
+    fw.push({ p: FINAL_RISE[1], dur: 1.4, ease: "sine.inOut" });
+    fw.push({ p: FINAL_OPEN[1], dur: 0.9, ease: "none" });
+    fw.push({ p: 1, dur: 0.8, ease: "sine.out" });
+  }
+
+  if (to > from) return fw;
+
+  // Reversa: mismos beats recorridos al revés, easings espejados
+  const back: StepWaypoint[] = [];
+  for (let k = fw.length - 1; k >= 0; k--) {
+    back.push({
+      p: k === 0 ? pStart : fw[k - 1].p,
+      dur: fw[k].dur,
+      ease: mirrorEase(fw[k].ease),
+    });
+  }
+  return back;
+}
+
 /** Estado completo del recorrido para un progreso p ∈ [0,1] */
 export function rideStateAt(p: number): RideState {
   p = clamp01(p);

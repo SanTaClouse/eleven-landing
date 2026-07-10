@@ -4,7 +4,7 @@ import { useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { useExperience } from "@/lib/store";
 import type { SceneHandles } from "./handles";
-import { LOGO_ASPECT, useLogoTexture } from "./useLogoTexture";
+import { useCircleLogoTexture } from "./useLogoTexture";
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -126,7 +126,7 @@ export function Elevator({ handles }: { handles: SceneHandles }) {
   // sincronía exacta con el HUD HTML, porque ambos leen store.floor.
   const floor = useExperience((s) => s.floor);
   const label = floorLabel(floor);
-  const logoTex = useLogoTexture();
+  const circleLogoTex = useCircleLogoTexture();
 
   return (
     // Grupo raíz de la cabina — RigController escribe position.y cada frame
@@ -168,12 +168,18 @@ export function Elevator({ handles }: { handles: SceneHandles }) {
         <boxGeometry args={[2.7, 2.7, 0.08]} />
         <meshStandardMaterial {...DARK_STEEL} />
       </mesh>
-      {/* Logo en la pared trasera: la marca recibe al pasajero cuando las
-          puertas se abren en PB, y acompaña el giro al entrar. Con aire a
-          los costados: las tiras LED están en x=±0.85. */}
-      <mesh position={[0, 1.8, 2.21]}>
-        <planeGeometry args={[1.25, 1.25 / LOGO_ASPECT]} />
-        <meshBasicMaterial map={logoTex} transparent toneMapped={false} depthWrite={false} />
+      {/* Placa circular de marca en la pared trasera: recibe al pasajero
+          cuando las puertas se abren en PB y acompaña el giro al entrar
+          (el wordmark ya está en header y fachada — acá va el iso circular).
+          Con aire a los costados: las tiras LED están en x=±0.85. */}
+      <mesh position={[0, 1.75, 2.21]}>
+        <planeGeometry args={[1.15, 1.15]} />
+        <meshBasicMaterial
+          map={circleLogoTex}
+          transparent
+          toneMapped={false}
+          depthWrite={false}
+        />
       </mesh>
       {[-0.85, 0.85].map((x) => (
         <mesh key={x} position={[x, 1.35, 2.22]}>

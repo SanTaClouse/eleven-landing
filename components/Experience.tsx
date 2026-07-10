@@ -10,6 +10,7 @@ import { Preloader } from "./Preloader";
 import { RideOverlays } from "./RideOverlays";
 import { ScrollController } from "./ScrollController";
 import { ServicePanels } from "./ServicePanels";
+import { WhatsAppFab } from "./WhatsAppFab";
 import { Scene } from "./three/Scene";
 
 /**
@@ -50,6 +51,7 @@ export function Experience({
       <Header onAccessible={onAccessible} />
       <Preloader />
       <FloorTimeline />
+      <WhatsAppFab />
       <ScrollController spacerRef={spacerRef} />
 
       {/* Spacer de scroll: 100vh por "tramo" del recorrido aprox.

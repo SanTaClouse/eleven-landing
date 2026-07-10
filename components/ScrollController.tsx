@@ -3,7 +3,7 @@
 import { useEffect, useRef, type RefObject } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FLOOR_STOPS } from "@/lib/ridePath";
+import { FLOOR_STOPS, stepWaypoints } from "@/lib/ridePath";
 import { getState, setState, subscribe, useExperience } from "@/lib/store";
 
 if (typeof window !== "undefined") {
@@ -53,12 +53,14 @@ const SWIPE_MIN = 26;
 const MOMENTUM_GAP_MS = 400;
 /** Espera tras un scroll externo (scrollbar) antes de corregir a una parada */
 const SETTLE_MS = 250;
-/** Duración del viaje: proporcional a la distancia en progreso, acotada.
-    Piso a piso ≈ 3.1s (0.13 × 24): da tiempo a apreciar cerrar puertas,
-    subida y apertura. Entrada y saltos largos topean en 5s. */
+/** Duración de los saltos EXPRESOS (timeline lateral, Home/End): tween único
+    proporcional a la distancia. Los pasos piso-a-piso NO usan esto: siguen
+    el guion por beats de stepWaypoints() en lib/ridePath.ts. */
 const DUR_PER_PROGRESS = 24;
 const DUR_MIN = 1.6;
 const DUR_MAX = 5;
+/** Deslizamiento de la sección de contacto cubriendo el canvas (px puros) */
+const CONTACT_SLIDE_DUR = 1.2;
 
 export function ScrollController({
   spacerRef,
@@ -73,7 +75,7 @@ export function ScrollController({
   const rideSpanRef = useRef(1);
   const indexRef = useRef(0);
   const steppingRef = useRef(false);
-  const tweenRef = useRef<gsap.core.Tween | null>(null);
+  const tweenRef = useRef<gsap.core.Tween | gsap.core.Timeline | null>(null);
   const swallowRef = useRef(false);
   const swallowTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const settleTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -96,6 +98,13 @@ export function ScrollController({
     ];
   };
 
+  /** Scroll programático SIEMPRE instantáneo: el <html> tiene scroll-smooth
+      (anchors de la versión accesible) y sin esto cada scrollTo del tween
+      dispara una animación suave nativa que persigue el objetivo con su
+      propio retraso y arruina el ritmo de los beats. */
+  const jump = (y: number) =>
+    window.scrollTo({ top: y, behavior: "instant" as ScrollBehavior });
+
   /** Traga la cola de momentum de rueda/trackpad hasta que haya una pausa */
   const startSwallow = () => {
     swallowRef.current = true;
@@ -107,31 +116,64 @@ export function ScrollController({
 
   const goToStop = (i: number, settle = false) => {
     const stops = stopsRef.current;
+    const last = stops.length - 1;
     const to = stops[i];
     const from = window.scrollY;
+    const fromIndex = indexRef.current;
     indexRef.current = i;
     if (Math.abs(to - from) < 1) {
       setState({ stopIndex: i });
       return;
     }
-    const dist = Math.abs(to - from) / rideSpanRef.current;
-    const duration = settle
-      ? 0.8
-      : Math.min(DUR_MAX, Math.max(DUR_MIN, dist * DUR_PER_PROGRESS));
     steppingRef.current = true;
     setState({ stopIndex: i, stepping: true });
     tweenRef.current?.kill();
+
     const proxy = { y: from };
+    const apply = () => jump(proxy.y);
+    const finish = () => {
+      steppingRef.current = false;
+      setState({ stepping: false });
+      startSwallow();
+    };
+    const span = rideSpanRef.current;
+
+    // Paso adyacente arrancando desde su parada → guion por beats: cada
+    // momento (puertas, subida, apertura) con su duración y easing propios.
+    // La última parada (contacto) comparte guion 3D con la llegada (p=1) y
+    // agrega el deslizamiento de la sección en px.
+    const wps =
+      !settle && Math.abs(from - stops[fromIndex]) < 4
+        ? stepWaypoints(fromIndex, i)
+        : null;
+    if (wps) {
+      const tl = gsap.timeline({ onUpdate: apply, onComplete: finish });
+      if (i > fromIndex) {
+        for (const w of wps)
+          tl.to(proxy, { y: w.p * span, duration: w.dur, ease: w.ease });
+        if (i === last)
+          tl.to(proxy, { y: to, duration: CONTACT_SLIDE_DUR, ease: "power1.inOut" });
+      } else {
+        if (fromIndex === last)
+          tl.to(proxy, { y: span, duration: CONTACT_SLIDE_DUR, ease: "power1.inOut" });
+        for (const w of wps)
+          tl.to(proxy, { y: w.p * span, duration: w.dur, ease: w.ease });
+      }
+      tweenRef.current = tl;
+      return;
+    }
+
+    // Salto expreso (timeline lateral, Home/End) o corrección de settle
+    const dist = Math.abs(to - from) / span;
+    const duration = settle
+      ? 0.8
+      : Math.min(DUR_MAX, Math.max(DUR_MIN, dist * DUR_PER_PROGRESS));
     tweenRef.current = gsap.to(proxy, {
       y: to,
       duration,
       ease: settle ? "power2.out" : "power2.inOut",
-      onUpdate: () => window.scrollTo(0, proxy.y),
-      onComplete: () => {
-        steppingRef.current = false;
-        setState({ stepping: false });
-        startSwallow();
-      },
+      onUpdate: apply,
+      onComplete: finish,
     });
   };
 
@@ -195,7 +237,7 @@ export function ScrollController({
     const onRefresh = () => {
       measure();
       if (getState().phase === "ride" && !steppingRef.current) {
-        window.scrollTo(0, stopsRef.current[indexRef.current]);
+        jump(stopsRef.current[indexRef.current]);
       }
     };
     ScrollTrigger.addEventListener("refresh", onRefresh);
@@ -228,7 +270,7 @@ export function ScrollController({
     document.body.style.overflow = phase === "ride" ? "" : "hidden";
 
     if (phase === "arriving") {
-      window.scrollTo(0, 0);
+      jump(0);
       indexRef.current = 0;
       setState({ stopIndex: 0, stepping: false });
       // Barrido de cámara: la intro anima introT y RigController interpola
@@ -309,7 +351,7 @@ export function ScrollController({
       const stops = stopsRef.current;
       const last = stops.length - 1;
       if (indexRef.current === last && window.scrollY < stops[last] - 1) {
-        window.scrollTo(0, stops[last]);
+        jump(stops[last]);
       }
     };
 
