@@ -6,7 +6,7 @@ import { MeshReflectorMaterial } from "@react-three/drei";
 import { FLOOR_H, FLOORS, TOP_Y } from "@/lib/ridePath";
 import type { QualityTier } from "@/lib/quality";
 import type { SceneHandles } from "./handles";
-import { LOGO_ASPECT, useLogoTexture } from "./useLogoTexture";
+import { LOGO_ASPECT, useCircleLogoTexture, useLogoTexture } from "./useLogoTexture";
 
 /**
  * ══════════════════════════════════════════════════════════════════════════
@@ -117,6 +117,7 @@ export function Building({
   tier: QualityTier;
 }) {
   const logoTex = useLogoTexture();
+  const circleLogoTex = useCircleLogoTexture();
   // Alturas con tira de luz: PB + pisos de servicio + llegada
   const stripYs = useMemo(
     () => Array.from({ length: FLOORS + 2 }, (_, i) => i * FLOOR_H),
@@ -278,11 +279,30 @@ export function Building({
           toneMapped={false}
         />
       </mesh>
-      {/* Logo de marca sobre el dintel del portal (a la vista al acercarse) */}
-      <mesh position={[0, 3.31, 4.63]}>
-        <planeGeometry args={[1.55, 1.55 / LOGO_ASPECT]} />
-        <meshBasicMaterial map={logoTex} transparent toneMapped={false} depthWrite={false} />
-      </mesh>
+      {/* ── Emblema circular de marca sobre el dintel del portal ───────────
+          Medallón (disco de acero + aro cromado + iso circular) apoyado en la
+          banda del dintel y asomando un poco por encima. TOPE ≈ y 3.84: con
+          FOV 50 el borde inferior del cuadro en la parada de piso 1
+          (Mantenimiento, la más baja) cae en y≈3.98, así que hasta ~3.85 el
+          emblema queda fuera de cuadro. No subir más el centro/radio o se
+          asoma en esa parada. */}
+      <group position={[0, 3.47, 4.63]}>
+        {/* Disco de acero oscuro (fondo del medallón) */}
+        <mesh position={[0, 0, -0.004]}>
+          <circleGeometry args={[0.35, 48]} />
+          <meshStandardMaterial color="#0b1322" metalness={0.75} roughness={0.3} />
+        </mesh>
+        {/* Aro cromado del medallón */}
+        <mesh position={[0, 0, -0.002]}>
+          <ringGeometry args={[0.35, 0.37, 48]} />
+          <meshStandardMaterial {...CHROME} />
+        </mesh>
+        {/* Iso circular sobre el disco */}
+        <mesh position={[0, 0, 0.004]}>
+          <planeGeometry args={[0.6, 0.6]} />
+          <meshBasicMaterial map={circleLogoTex} transparent toneMapped={false} depthWrite={false} />
+        </mesh>
+      </group>
       {/* Botonera de llamada sobre la cara frontal del pilar derecho del
           portal (gemela del botón HTML), de frente a la cámara al acercarse */}
       <group position={[1.95, 1.15, 4.630]}>

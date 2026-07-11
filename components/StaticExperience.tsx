@@ -123,7 +123,7 @@ export function StaticExperience({ onImmersive }: { onImmersive: () => void }) {
                     key={h}
                     className="flex items-center gap-2 text-xs text-brand-light/90"
                   >
-                    <span className="inline-block h-1 w-4 rounded bg-brand" aria-hidden />
+                    <span className="inline-block h-1 w-4 shrink-0 rounded bg-brand" aria-hidden />
                     {h}
                   </li>
                 ))}

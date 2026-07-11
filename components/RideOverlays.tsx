@@ -90,7 +90,7 @@ export function RideOverlays() {
 
       <div
         ref={hintRef}
-        className="scroll-synced pointer-events-none fixed inset-x-0 z-10 flex flex-col items-center gap-2 opacity-0 transition-opacity duration-500"
+        className="scroll-synced pointer-events-none fixed inset-x-0 z-10 flex flex-col items-center gap-2 opacity-0 transition-opacity duration-500 [@media(max-height:720px)]:hidden"
         style={{ bottom: "max(1.75rem, env(safe-area-inset-bottom))" }}
       >
         <div className="flex flex-col items-center gap-1">

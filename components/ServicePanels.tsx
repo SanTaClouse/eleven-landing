@@ -75,13 +75,17 @@ export function ServicePanels() {
             <p className="mx-auto max-w-md text-sm leading-relaxed text-steel md:text-base">
               {service.description}
             </p>
-            <ul className="mt-6 flex flex-col items-center gap-2">
+            <ul
+              className={`mx-auto mt-6 grid w-fit gap-x-8 gap-y-2 text-left ${
+                service.highlights.length > 4 ? "sm:grid-cols-2" : "grid-cols-1"
+              }`}
+            >
               {service.highlights.map((h) => (
                 <li
                   key={h}
                   className="flex items-center gap-2 text-xs text-brand-light/90 md:text-sm"
                 >
-                  <span className="inline-block h-1 w-4 rounded bg-brand" aria-hidden />
+                  <span className="inline-block h-1 w-4 shrink-0 rounded bg-brand" aria-hidden />
                   {h}
                 </li>
               ))}

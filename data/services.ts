@@ -30,12 +30,14 @@ export const SERVICES: Service[] = [
     floor: "1",
     title: "Mantenimiento de ascensores",
     description:
-      "Planes de mantenimiento preventivo y correctivo para garantizar el funcionamiento óptimo de su ascensor. Inspecciones periódicas y reparaciones certificadas.",
+      "Planes de mantenimiento preventivo adecuados para tu ascensor. Trabajamos con amplia variedad de marcas y diversas tecnologías.",
     highlights: [
       "Inspecciones mensuales",
-      "Mantenimiento preventivo",
       "Reparaciones de emergencia",
-      "Certificaciones técnicas",
+      "Atención inmediata",
+      "Alarga la vida útil de tu ascensor",
+      "Conserva adecuadamente cada componente",
+      "Garantiza condiciones seguras de funcionamiento",
     ],
     stat: {
       value: 60,
@@ -48,11 +50,13 @@ export const SERVICES: Service[] = [
     floor: "2",
     title: "Modernización",
     description:
-      "Actualización y modernización de ascensores antiguos. Mejoramos eficiencia energética, seguridad y estética para alargar la vida útil del equipo.",
+      "Modernizaciones parciales y totales para Ascensores antiguos o fuera de vigencia. Mejoramos la eficiencia energética, la seguridad y prolongamos la vida útil del equipo.",
     highlights: [
-      "Actualización tecnológica",
-      "Mejora de seguridad",
-      "Eficiencia energética",
+      "Modernizaciones eléctricas totales",
+      "Renovación de cabinas",
+      "Renovación de sistema motriz",
+      "Modernizaciones parciales",
+      "Ahorro de energía eléctrica",
       "Renovación estética",
     ],
   },
@@ -60,23 +64,23 @@ export const SERVICES: Service[] = [
     floor: "3",
     title: "Instalación de ascensores",
     description:
-      "Instalación profesional de ascensores nuevos en edificios residenciales y comerciales. Asesoramiento técnico y cumplimiento de normativas vigentes.",
+      "Instalación de ascensores nuevos en edificios, residencias o comercios. Asesoramiento técnico, relevamientos y montajes desde cero.",
     highlights: [
       "Asesoramiento técnico",
-      "Instalación certificada",
-      "Cumplimiento normativo",
-      "Garantía extendida",
+      "Cumplimiento de normativa",
+      "Trabajos garantizados",
+      "Atención post venta",
     ],
   },
   {
     floor: "4",
     title: "Urgencias 24/7",
     description:
-      "Atención inmediata ante cualquier falla o emergencia con su ascensor. Técnicos disponibles todos los días del año para rescates de personas, reparaciones urgentes y diagnóstico de fallas.",
+      "Atención inmediata ante emergencias. Técnicos disponibles todos los días del año para realizar rescates de personas, reparaciones urgentes y diagnósticos de fallas.",
     highlights: [
       "Guardia activa 24/7",
-      "Rescate de personas",
-      "Respuesta promedio: 30 min en Santa Fe capital",
+      "Respuesta inmediata",
+      "Compromiso y responsabilidad",
     ],
   },
 ];
