@@ -78,13 +78,20 @@ export function RideOverlays() {
               "drop-shadow(0 4px 14px rgba(3,6,14,0.95)) drop-shadow(0 0 34px rgba(64,128,224,0.6))",
           }}
         />
+        {/* Servicios */}
         <p
-          className="mt-6 max-w-lg text-sm font-medium text-snow md:text-base"
+          className="mt-6 text-[11px] font-semibold uppercase tracking-[0.26em] text-brand-light/90 md:text-sm"
           style={{ textShadow: "0 1px 10px rgba(3,6,14,0.9), 0 0 26px rgba(3,6,14,0.6)" }}
         >
-          Mantenimiento, instalación y modernización de ascensores para
-          consorcios y administradoras de edificios. Atención inmediata las
-          24 horas.
+          Mantenimiento · Instalación · Modernización de Ascensores
+        </p>
+        {/* Claim + disponibilidad */}
+        <p
+          className="mt-3 max-w-md text-sm font-medium leading-relaxed text-snow md:text-base"
+          style={{ textShadow: "0 1px 10px rgba(3,6,14,0.9), 0 0 26px rgba(3,6,14,0.6)" }}
+        >
+          Profesionalismo y responsabilidad en cada trabajo. Atención
+          inmediata las 24 horas, los 365 días del año.
         </p>
       </div>
 
