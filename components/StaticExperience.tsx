@@ -68,10 +68,12 @@ export function StaticExperience({ onImmersive }: { onImmersive: () => void }) {
           alt="ELEVEN Ascensores"
           className="w-80 max-w-[85vw] drop-shadow-[0_0_36px_rgba(64,128,224,0.55)] md:w-[560px]"
         />
-        <p className="mt-6 max-w-xl text-sm leading-relaxed text-steel md:text-base">
-          Somos una empresa de Santa Fe dedicada al mantenimiento, instalación
-          y modernización de ascensores para consorcios y administradoras de
-          edificios. Atención inmediata las 24 horas.
+        <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.26em] text-brand-light/90 md:text-sm">
+          Mantenimiento · Instalación · Modernización de Ascensores
+        </p>
+        <p className="mt-3 max-w-xl text-sm leading-relaxed text-steel md:text-base">
+          Profesionalismo y responsabilidad en cada trabajo. Atención inmediata
+          las 24 horas, los 365 días del año.
         </p>
         <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
           {TRUST.map((t) => (

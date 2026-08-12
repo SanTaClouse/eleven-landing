@@ -42,10 +42,12 @@ export function FloorTimeline() {
 
         // Riel de progreso: se llena hasta el centro del punto activo,
         // animado por CSS al ritmo del viaje.
+        // PB (índice 0) se renderiza abajo; el riel se llena desde ahí hacia
+        // arriba hasta el punto activo (el ascensor SUBE).
         const first = btnRefs.current[0];
         const active = btnRefs.current[stopIndex];
         if (fillRef.current && first && active) {
-          fillRef.current.style.height = `${active.offsetTop - first.offsetTop}px`;
+          fillRef.current.style.height = `${first.offsetTop - active.offsetTop}px`;
         }
 
         STOPS.forEach((_, i) => {
@@ -110,17 +112,23 @@ export function FloorTimeline() {
         {/* Riel de progreso (altura en px seteada por la suscripción) */}
         <div
           ref={fillRef}
-          className="absolute left-1/2 top-5 w-[2px] -translate-x-1/2 rounded-full transition-[height] duration-[2600ms] ease-in-out md:top-[26px]"
+          className="absolute left-1/2 bottom-5 w-[2px] -translate-x-1/2 rounded-full transition-[height] duration-[2600ms] ease-in-out md:bottom-[26px]"
           style={{
             height: 0,
             background:
-              "linear-gradient(180deg, rgba(115,179,247,0.9), rgba(64,128,224,0.9))",
+              "linear-gradient(0deg, rgba(64,128,224,0.9), rgba(115,179,247,0.9))",
             boxShadow: "0 0 8px rgba(64,128,224,0.7)",
           }}
           aria-hidden
         />
 
-        {STOPS.map((stop, i) => (
+        {STOPS.map((_, revI) => {
+          // Render invertido: contacto arriba … PB abajo (el ascensor sube).
+          // `i` sigue siendo el índice real de la parada (0 = PB) para refs,
+          // estado activo y requestedStop; solo cambia el orden visual.
+          const i = STOPS.length - 1 - revI;
+          const stop = STOPS[i];
+          return (
           <button
             key={stop.name}
             ref={(el) => {
@@ -159,7 +167,8 @@ export function FloorTimeline() {
               {stop.name}
             </span>
           </button>
-        ))}
+          );
+        })}
       </div>
     </nav>
   );

@@ -34,7 +34,7 @@ export function RideOverlays() {
           scrimRef.current.style.visibility = o <= 0.01 ? "hidden" : "visible";
         }
 
-        // Hint "DESLIZÁ": visible detenido en una parada (no mientras el
+        // Hint "CONOCÉNOS": visible detenido en una parada (no mientras el
         // stepper anima el viaje, no en la salida final). Aparece con un
         // retardo para no parpadear entre piso y piso; se apaga al instante
         // al arrancar el paso — feedback de que el gesto fue tomado.
@@ -113,7 +113,7 @@ export function RideOverlays() {
             className="text-[10px] font-semibold tracking-[0.3em] text-snow/80 md:text-xs"
             style={{ textShadow: "0 1px 6px rgba(3,6,14,0.9)" }}
           >
-            DESLIZÁ
+            CONOCÉNOS
           </span>
         </div>
       </div>
