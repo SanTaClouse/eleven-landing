@@ -68,8 +68,10 @@ export function StaticExperience({ onImmersive }: { onImmersive: () => void }) {
           alt="ELEVEN Ascensores"
           className="w-80 max-w-[85vw] drop-shadow-[0_0_36px_rgba(64,128,224,0.55)] md:w-[560px]"
         />
-        <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.26em] text-brand-light/90 md:text-sm">
-          Mantenimiento · Instalación · Modernización de Ascensores
+        <p className="mt-6 text-[11px] font-semibold uppercase leading-relaxed tracking-[0.26em] text-brand-light/90 md:text-sm">
+          Mantenimiento · Instalación · Modernización
+          <br />
+          de Ascensores
         </p>
         <p className="mt-3 max-w-xl text-sm leading-relaxed text-steel md:text-base">
           Profesionalismo y responsabilidad en cada trabajo. Atención inmediata

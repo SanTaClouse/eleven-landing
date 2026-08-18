@@ -95,7 +95,13 @@ export const CONTACT = {
   phoneRaw: "+5493426264019",
   /** Para wa.me */
   whatsapp: "5493426264019",
-  email: "elevenautomatismos@gmail.com",
+  email: "elevenascensores@gmail.com",
+  /** Socio / contacto directo adicional (se muestra en el footer) */
+  partner: {
+    name: "Jaime",
+    phone: "+54 9 342 550 2999",
+    phoneRaw: "+5493425502999",
+  },
 };
 
 /** Sellos de confianza (del sitio anterior) */

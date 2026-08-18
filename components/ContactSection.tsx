@@ -54,9 +54,9 @@ export function ContactSection({ animate = true }: { animate?: boolean }) {
           Hablemos de tu ascensor
         </h2>
         <p className="contact-reveal mt-5 max-w-xl text-sm leading-relaxed text-steel md:text-base">
-          Contanos qué necesita tu edificio — instalación, mantenimiento,
-          modernización o una urgencia — y nos ponemos en contacto a la
-          brevedad. Atendemos consorcios, administradoras y particulares.
+          ¿Necesitás realizar el mantenimiento, modernización o instalación de un ascensor?
+          Contactate con nosotros y te asesoramos con atención personalizada y la seguridad de un equipo profesional.
+          Atendemos consorcios, administradoras, constructoras y particulares.
         </p>
 
         <div className="contact-reveal mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
@@ -121,6 +121,14 @@ export function ContactSection({ animate = true }: { animate?: boolean }) {
             alt="Eleven Ascensores"
             className="h-10 w-auto"
           />
+          <p className="text-center text-xs text-steel/70">
+            <a
+              href={`tel:${CONTACT.partner.phoneRaw}`}
+              className="transition-colors hover:text-brand-light"
+            >
+              {CONTACT.partner.name} · {CONTACT.partner.phone}
+            </a>
+          </p>
           <p className="text-center text-xs text-steel/50">
             © {new Date().getFullYear()} {CONTACT.name} — {CONTACT.city}
           </p>
