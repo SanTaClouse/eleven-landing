@@ -120,22 +120,25 @@ export function Preloader() {
       ref={rootRef}
       className="fixed inset-0 z-50 flex flex-col items-center justify-center overflow-hidden bg-ink"
     >
-      {/* Luz ambiental sutil de fondo */}
+      {/* Luz ambiental de fondo. Gradientes radiales (NO filter:blur): la
+          suavidad la da el propio gradiente, así el halo no se recorta a un
+          cuadrado al toparse con el overflow-hidden del contenedor. El div se
+          extiende más allá del viewport para que la deriva nunca muestre un
+          borde. */}
       <div
         aria-hidden
-        className="animate-drift-slow absolute -left-1/4 top-[-20%] h-[70vh] w-[70vw] rounded-full opacity-40 blur-3xl"
+        className="animate-drift-slow pointer-events-none absolute -inset-[18%]"
         style={{
           background:
-            "radial-gradient(circle, rgba(26,84,182,0.35) 0%, transparent 65%)",
+            "radial-gradient(circle at 50% 42%, rgba(64,128,224,0.24) 0%, rgba(26,84,182,0.12) 30%, transparent 60%)",
         }}
       />
       <div
         aria-hidden
-        className="animate-drift-slow absolute bottom-[-25%] right-[-15%] h-[60vh] w-[55vw] rounded-full opacity-30 blur-3xl"
+        className="pointer-events-none absolute inset-0"
         style={{
-          animationDelay: "-7s",
           background:
-            "radial-gradient(circle, rgba(64,128,224,0.28) 0%, transparent 65%)",
+            "radial-gradient(ellipse 70% 45% at 50% 108%, rgba(26,84,182,0.18) 0%, transparent 68%)",
         }}
       />
 

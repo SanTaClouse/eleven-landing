@@ -87,29 +87,37 @@ export function ContactSection({ animate = true }: { animate?: boolean }) {
         </a>
 
         <dl className="contact-reveal mt-16 grid w-full max-w-2xl grid-cols-1 gap-6 text-sm sm:grid-cols-3">
-          {[
-            { dt: "Teléfono", dd: CONTACT.phone, href: `tel:${CONTACT.phoneRaw}` },
-            { dt: "Email", dd: CONTACT.email, href: `mailto:${CONTACT.email}` },
-            { dt: "Zona de trabajo", dd: CONTACT.city },
-          ].map((item) => (
-            <div key={item.dt} className="flex flex-col gap-1">
-              <dt className="text-[10px] tracking-[0.3em] text-steel/60">
-                {item.dt.toUpperCase()}
-              </dt>
-              <dd>
-                {item.href ? (
-                  <a
-                    href={item.href}
-                    className="break-words text-snow transition-colors hover:text-brand-light"
-                  >
-                    {item.dd}
-                  </a>
-                ) : (
-                  <span className="text-snow">{item.dd}</span>
-                )}
-              </dd>
-            </div>
-          ))}
+          <div className="flex flex-col gap-1">
+            <dt className="text-[10px] tracking-[0.3em] text-steel/60">TELÉFONO</dt>
+            <dd className="flex flex-col gap-1">
+              {CONTACT.phones.map((c) => (
+                <a
+                  key={c.phoneRaw}
+                  href={`tel:${c.phoneRaw}`}
+                  className="break-words text-snow transition-colors hover:text-brand-light"
+                >
+                  {c.name} · {c.phone}
+                </a>
+              ))}
+            </dd>
+          </div>
+          <div className="flex flex-col gap-1">
+            <dt className="text-[10px] tracking-[0.3em] text-steel/60">EMAIL</dt>
+            <dd>
+              <a
+                href={`mailto:${CONTACT.email}`}
+                className="break-words text-snow transition-colors hover:text-brand-light"
+              >
+                {CONTACT.email}
+              </a>
+            </dd>
+          </div>
+          <div className="flex flex-col gap-1">
+            <dt className="text-[10px] tracking-[0.3em] text-steel/60">ZONA DE TRABAJO</dt>
+            <dd>
+              <span className="text-snow">{CONTACT.city}</span>
+            </dd>
+          </div>
         </dl>
       </div>
 
@@ -121,14 +129,17 @@ export function ContactSection({ animate = true }: { animate?: boolean }) {
             alt="Eleven Ascensores"
             className="h-10 w-auto"
           />
-          <p className="text-center text-xs text-steel/70">
-            <a
-              href={`tel:${CONTACT.partner.phoneRaw}`}
-              className="transition-colors hover:text-brand-light"
-            >
-              {CONTACT.partner.name} · {CONTACT.partner.phone}
-            </a>
-          </p>
+          <div className="flex flex-col items-center gap-0.5 text-center text-xs text-steel/70">
+            {CONTACT.phones.map((c) => (
+              <a
+                key={c.phoneRaw}
+                href={`tel:${c.phoneRaw}`}
+                className="transition-colors hover:text-brand-light"
+              >
+                {c.name} · {c.phone}
+              </a>
+            ))}
+          </div>
           <p className="text-center text-xs text-steel/50">
             © {new Date().getFullYear()} {CONTACT.name} — {CONTACT.city}
           </p>

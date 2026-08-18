@@ -89,19 +89,15 @@ export const SERVICES: Service[] = [
 export const CONTACT = {
   name: "ELEVEN Ascensores",
   city: "Santa Fe Capital, Santa Fe, Argentina",
-  /** Para mostrar */
-  phone: "+54 9 342 626 4019",
-  /** Para links tel: */
-  phoneRaw: "+5493426264019",
-  /** Para wa.me */
+  /** Contactos telefónicos, en orden de aparición (sección de contacto + footer).
+   *  `phone` = para mostrar; `phoneRaw` = para links tel:. */
+  phones: [
+    { name: "Martín", phone: "+54 9 342 626 4019", phoneRaw: "+5493426264019" },
+    { name: "Jaime", phone: "+54 9 342 550 2999", phoneRaw: "+5493425502999" },
+  ],
+  /** Para wa.me (usa el número de Martín) */
   whatsapp: "5493426264019",
   email: "elevenascensores@gmail.com",
-  /** Socio / contacto directo adicional (se muestra en el footer) */
-  partner: {
-    name: "Jaime",
-    phone: "+54 9 342 550 2999",
-    phoneRaw: "+5493425502999",
-  },
 };
 
 /** Sellos de confianza (del sitio anterior) */
