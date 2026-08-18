@@ -54,8 +54,8 @@ export function ContactSection({ animate = true }: { animate?: boolean }) {
           Hablemos de tu ascensor
         </h2>
         <p className="contact-reveal mt-5 max-w-xl text-sm leading-relaxed text-steel md:text-base">
-          ¿Necesitás realizar el mantenimiento, modernización o instalación de un ascensor?
-          Contactate con nosotros y te asesoramos con atención personalizada y la seguridad de un equipo profesional.
+          ¿Necesitás realizar el mantenimiento, modernización o instalación de un ascensor?<br />
+          Contactate con nosotros y te asesoramos con atención personalizada y la seguridad de un equipo profesional.<br />
           Atendemos consorcios, administradoras, constructoras y particulares.
         </p>
 
